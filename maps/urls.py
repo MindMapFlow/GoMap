@@ -17,13 +17,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView
+from django.contrib.auth import views as auth_views
+from RoadMap.views import register
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', TemplateView.as_view(template_name='index.html'), name='home'),
     path('roadmap/', include('RoadMap.urls')),
     path('gomap/', include('GoMap.urls')),
-    
-    # path('taskmap/', include('taskmap.urls')),
+    path('accounts/register/', register, name='register'),
+    path('accounts/', include('django.contrib.auth.urls')),  # Включить маршруты аутентификации
 ]
 
