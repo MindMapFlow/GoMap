@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+  <title>Home - Brand</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900&amp;display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i&amp;display=swap">
+  <link rel="stylesheet" href="assets/css/Button-Outlines---Pretty.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jersey+15&family=Play:wght@400;700&display=swap" rel="stylesheet">
+  
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+        background-color: #000;
+        color: white;
+        font-family: 'Inter', sans-serif, bold;
+      }
+    
+      .masthead1 {
+        margin-top: 0%;
+        font-family: "Jersey 15", sans-serif;
+        font-size: 1000%;
+        font-style: normal;
+      }
+      .masthead2{
+        font-family: "Play", sans-serif;
+        font-size: 300%;
+        font-style: normal;
+      }
+      header.masthead {
+        padding-top: 100px; /* Меньше отступ сверху */
+        padding-bottom: 100px;
+      }
+      
+      .masthead-content .container {
+        margin-top: 2%; /* Смещение текста вверх */
+      }
+
+      .goal_name{
+        font-family: "Play", sans-serif;
+        font-weight: 30%;
+        font-style: normal;
+      }
+
+      .goal {
+        background-color: #17794c;
+        padding: 20px;
+        margin: 20px 15px 5px;
+        border-radius: 15px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+  
+      .goal:hover {
+        background-color: #1e8656;
+      }
+  
+      .goal h4 {
+        font-weight: 600;
+        margin: 0;
+      }
+  
+      .progress-container {
+        padding: 5px 15px 10px;
+        margin-top: 0;
+      }
+  
+      .progress {
+        background-color: rgba(255, 255, 255, 0.203);
+        height: 18px;
+        width: 93%;
+        margin-left: 3%;
+        margin-right: 3%;
+        border-radius: 999px;
+        overflow: hidden;
+      }
+  
+      .progress-bar {
+        
+        border-radius: 999px;
+      }
+  
+      .subgoals {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.5s ease, opacity 0.5s ease;
+        opacity: 0;
+        padding: 0 15px;
+        margin-bottom: 15px;
+      }
+  
+      .subgoals.show {
+        max-height: 200px;
+        opacity: 1;
+        margin-top: 8px;
+      }
+  
+      .subgoals .subgoal {
+        background-color: rgba(23, 121, 76, 0.8);
+        color: #ffffff;
+        padding: 10px 12px;
+        border-radius: 10px;
+        margin-bottom: 8px;
+        text-decoration: none;
+        display: block;
+        font-weight: 500;
+      }
+  
+      .subgoals .subgoal:hover {
+        background-color: #2aa86d;
+      }
+
+      .btn-oval {
+        border-radius: 50px;
+        background-color: #17794c;
+        border: none;
+        padding: 12px 30px;
+        color: white;
+        font-size: 18px;
+        margin-top: 50px;
+    }
+
+    main.container {
+        margin-top: 80px;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar navbar-dark navbar-expand-lg fixed-top bg-dark navbar-custom">
+    <div class="container">
+      <a class="navbar-brand" href="{% url 'gomap_home' %}">GOMAP</a>
+      <button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navbarResponsive">
+        <span class="visually-hidden">Toggle navigation</span>
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="#">Sign Up</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Log In</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <header class="text-center text-light masthead" style="background: linear-gradient(var(--bs-green) 0%, rgb(13,72,45) 42%, black 87%), #000000;">
+    <div class="masthead-content">
+      <div class="container">
+        <p class="masthead1">GoMap</p>
+        <h2 class="masthead2" >Воплощай свои цели</h2>
+      </div>
+    </div>
+    <a href="{% url 'test_view'%}" class="btn btn-oval">Тест</a>
+  </header>
+
+  <main class="container mt-5 pt-5">
+    <div class="row">
+      {% for goal in user_goals %}
+      <div class="col-md-6">
+        <div class="goal" onclick="toggleSubgoals(this)">
+          <h4 class="goal_name">{{ goal.goal_name }}</h4>
+        </div>
+
+<div class="progress">
+  <div class="progress-bar bg-success" role="progressbar"
+       style="width: {{ goal.progress_goal}}%;"
+       aria-valuenow="{{ goal.progress_goal }}"
+       aria-valuemin="0" aria-valuemax="100">
+    {{ goal.progress_goal|floatformat:0 }}%
+  </div>
+</div>
+        {% if goal.all_subgoals.all %}
+        <div class="subgoals">
+          {% for subgoal in goal.all_subgoals.all %}
+          <a href="{% url 'subgoal_detail' subgoal.id %}" class="subgoal">
+            {{ subgoal.default_subgoal.sub_goal_name }}
+          </a>
+        {% endfor %}
+
+
+        </div>
+        {% else %}
+        <a class="subgoal" >Нет побочных целей</a>
+        {% endif %}
+      </div>
+      {% endfor %}
+      
+    </div>
+  </main>
+
+  <footer class="py-5 bg-black mt-5">
+    <div class="container">
+      <p class="text-center text-white m-0 small">© Almau project</p>
+    </div>
+  </footer>
+
+  <script>
+    function toggleSubgoals(goalElement) {
+      const container = goalElement.parentElement;
+      const subgoals = container.querySelector('.subgoals');
+      subgoals.classList.toggle('show');
+    }
+  </script>
+
+  <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+</body>
+
+</html>

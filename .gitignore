@@ -1,0 +1,46 @@
+# Игнор виртуального окружения
+venv/
+ENV/
+env/
+.venv/
+.ENV/
+.env/
+
+# Файлы Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+
+# Логи и временные файлы
+*.log
+*.pot
+*.pyc
+*.pyo
+*.db
+*.sqlite3
+
+# Конфиденциальные файлы
+*.env
+*.secret
+
+# Кэш pip
+pip-wheel-metadata/
+pip-log.txt
+
+# Django специфическое
+*.sqlite3
+db.sqlite3
+media/
+staticfiles/
+static/
+
+# VS Code
+.vscode/
+
+# MacOS
+.DS_Store
+
+# PyCharm
+.idea/

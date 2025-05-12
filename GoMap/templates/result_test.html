@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Тест — GoMap</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Catamaran:400;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400;700&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=Play:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: 'Inter', sans-serif;
+            padding-top: 100px;
+        }
+        h2 {
+            font-family: 'Play', sans-serif;
+            font-size: 250%;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .title-box {
+            background-color: #17794c;
+            padding: 30px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 0 15px rgba(0,0,0,0.3);
+        }
+        .goal-block {
+            background-color: #145c3d;
+            padding: 20px;
+            border-radius: 16px;
+            margin-bottom: 25px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.25);
+            transition: all 0.3s ease;
+        }
+        .goal-block:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 20px rgba(0,255,150,0.3);
+        }
+        h3 {
+            font-size: 200%;
+            margin-bottom: 20px;
+            color: #ffffff;
+        }
+        h4 {
+            font-family: 'Play', sans-serif;
+            font-size: 150%;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        ul li {
+            margin-bottom: 10px;
+        }
+        label {
+            font-size: 18px;
+            padding-left: 10px;
+        }
+        input[type="checkbox"] {
+            accent-color: #021b10;
+            margin-right: 10px;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            border: 2px solid #0f4d33;
+            transition: transform 0.2s ease;
+        }
+        input[type="checkbox"]:checked {
+            background-color: #0f4d33;
+            transform: scale(1.2);
+        }
+        .btn-success {
+            background-color: #17794c;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 18px;
+            width: 100%;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+        .btn-success:hover {
+            background-color: #0f4d33;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-dark navbar-expand-lg fixed-top bg-dark navbar-custom">
+        <div class="container">
+          <a class="navbar-brand" href="{% url 'gomap_home' %}">GOMAP</a>
+          <button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navbarResponsive">
+            <span class="visually-hidden">Toggle navigation</span>
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ms-auto">
+              <li class="nav-item"><a class="nav-link" href="#">Sign Up</a></li>
+              <li class="nav-item"><a class="nav-link" href="#">Log In</a></li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+    <div class="container">
+        <h2>Ваши цели</h2>
+        <h4>Выберете подходящие вам пути для её достижения</h4>
+        <form method="post">
+            {% csrf_token %}
+            {% for goal in matching_goals %}
+                <div class="goal-block">
+                    <h3>{{ goal.goal_view_name }}</h3>
+                    <ul>
+                        {% for subgoal in goal.default_subgoals.all %}
+                            <li>
+                                <label>
+                                    <input type="checkbox" name="selected_subgoals" value="{{ subgoal.id }}">
+                                   {{ subgoal.sub_goal_name }}
+                                </label>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endfor %}
+            <button type="submit" name="confirm_goals" class="btn btn-success">Подтвердить</button>
+        </form>
+    </div>
+</body>
+</html>

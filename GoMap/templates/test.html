@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Тест — GoMap</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Catamaran:400;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400;700&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=Play:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: 'Inter', sans-serif;
+            padding-top: 100px;
+        }
+        h2 {
+            font-family: 'Play', sans-serif;
+            font-size: 250%;
+            text-align: center;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .title-box {
+            background-color: #17794c;
+            padding: 30px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 0 15px rgba(0,0,0,0.3);
+        }
+        .question-box {
+            background-color: #145c3d;
+            padding: 30px;
+            margin-bottom: 25px;
+            border-radius: 16px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.25);
+            transition: all 0.3s ease;
+        }
+        .question-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 20px rgba(0,255,150,0.3);
+        }
+        legend {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        .form-check {
+            margin-bottom: 12px;
+        }
+        .form-check-label {
+            font-size: 16px;
+            padding-left: 10px;
+        }
+        input[type="radio"] {
+            accent-color: #0f4d33;
+            margin-right: 10px;
+        }
+        .btnnext {
+            background-color: #000000;
+            color: aliceblue;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 18px;
+            transition: background-color 0.3s ease;
+            width: 100%;
+        }
+        .btnend {
+                background-color: #17794c;
+                color: aliceblue;
+                border: none;
+                padding: 15px 40px;
+                border-radius: 50px;
+                font-size: 18px;
+                transition: background-color 0.3s ease;
+                width: 100%;
+            }
+        
+        .btnnext:hover {
+            background-color: #17794c;
+        }
+        .btnend:hover {
+            background-color: #12643e;
+            transform: translateY(-3px);
+            box-shadow: 0 0 20px rgba(0,255,150,0.3);
+        }
+        
+        select.form-control {
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 16px;
+            background-color: #0f4d33;
+            color: white;
+            border: 1px solid #0f4d33;
+        }
+        .form-check input {
+            margin-top: 8px;
+            margin-right: 10px;
+        }
+        .form-check input:checked {
+            background-color: #0f4d33;
+            border-color: #0f4d33;
+        }
+        .question-box label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        .finish-btn-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-dark navbar-expand-lg fixed-top bg-dark navbar-custom">
+        <div class="container">
+          <a class="navbar-brand" href="{% url 'gomap_home' %}">GOMAP</a>
+          <button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navbarResponsive">
+            <span class="visually-hidden">Toggle navigation</span>
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ms-auto">
+              <li class="nav-item"><a class="nav-link" href="#">Sign Up</a></li>
+              <li class="nav-item"><a class="nav-link" href="#">Log In</a></li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+    <div class="container">
+        <h2>Пройдите тест</h2>
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="question-box">
+                <label for="direction">Выберите направление:</label>
+                <select name="direction" id="direction" class="form-control">
+                    <option value="">---</option>
+                    {% for direction in directions %}
+                        <option value="{{ direction.id }}" {% if selected_direction and direction.id == selected_direction.id %}selected{% endif %}>
+                            {{ direction.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+                <button type="submit" name="continue" class="btnnext mt-3">Продолжить</button>
+            </div>
+
+            {% if specific_questions %}
+                {% for question in specific_questions %}
+                <div class="question-box">
+                    <p><strong>{{ question.text }}</strong></p>
+                    {% for answer in question.answers.all %}
+                    <div class="form-check">
+                        <input type="radio" class="form-check-input" name="specific_question_{{ question.id }}" value="{{ answer.id }}">
+                        <label class="form-check-label" for="specific_question_{{ question.id }}_{{ answer.id }}">
+                            {{ answer.text }}
+                        </label>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+
+                {% for question in general_questions %}
+                <div class="question-box">
+                    <p>{{ question.text }}</p>
+                    {% for answer in question.answers.all %}
+                    <div class="form-check">
+                        <input type="radio" class="form-check-input" name="general_question_{{ question.id }}" value="{{ answer.id }}">
+                        <label class="form-check-label" for="general_question_{{ question.id }}_{{ answer.id }}">
+                            {{ answer.text }}
+                        </label>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+                
+                <div class="finish-btn-container">
+                    <button type="submit" name="finish" class="btn btn-success btnend">Завершить</button>
+                </div>
+            {% endif %}
+        </form>
+    </div>
+</body>
+</html>
